@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { OrderService } from '../../services/order.service';
+import { Order } from '../../models/order.model';
 
 @Component({
   standalone: true,
@@ -12,4 +14,28 @@ import { Component } from '@angular/core';
     </div>
   `
 })
-export class CartComponent {}
+export class CartComponent {
+  constructor(private orderService: OrderService) { }
+  placeOrder() {
+    const order: Order = {
+      userId: '123',
+      vendorId: '456',
+      items: [
+        { name: 'Item 1', price: 100, quantity: 2 }
+      ],
+      totalAmount: 200,
+      status: 'PLACED'  // now TS knows this is valid literal type
+    };
+
+    this.orderService.createOrder(order).subscribe({
+      next: (res) => {
+        console.log('Order placed', res);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+
+}
