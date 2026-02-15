@@ -1,24 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { SocketService } from '../../services/socket.service';
 
 @Component({
-  standalone: true,
   selector: 'app-home',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.component.html',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  vendors = [
-    { _id: '1', shopName: 'Sharma Ji Chaat', avgPrepTime: 10 },
-    { _id: '2', shopName: 'Delhi Momos', avgPrepTime: 15 },
-    { _id: '3', shopName: 'Roll Factory', avgPrepTime: 12 }
-  ];
+  message = '';
+  receivedMessage = '';
 
-  constructor(private router: Router){}
+  constructor(private socketService: SocketService) { }
 
-  openVendor(id:string){
-    this.router.navigate(['/vendor', id]);
+  ngOnInit() {
+    this.socketService.receiveMessage().subscribe((data) => {
+      this.receivedMessage = data;
+    });
+  }
+
+  send() {
+    this.socketService.sendMessage(this.message);
   }
 }
