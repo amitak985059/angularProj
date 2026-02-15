@@ -1,0 +1,15 @@
+<div class="p-10 bg-gray-100 min-h-screen">
+  <h2 class="text-3xl font-bold mb-8">Nearby Shops</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div *ngFor="let vendor of vendors"
+      class="bg-white p-6 rounded-xl shadow hover:shadow-xl cursor-pointer transition"
+      (click)="openVendor(vendor._id)">
+
+      <h3 class="text-xl font-semibold">{{vendor.shopName}}</h3>
+      <p class="text-gray-500 mt-2">
+        Prep Time: {{vendor.avgPrepTime}} mins
+      </p>
+    </div>
+  </div>
+</div>
